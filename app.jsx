@@ -13,7 +13,7 @@ function shuffleArray(array) {
   }
   return newArray;
 }
-function QRCodeCard({ visitor }) {
+function QRCodeCard({ visitor, commentCount }) {
   const canvasRef = useRef(null);
   const profileUrl = `https://websim.com/@${visitor.username}`;
   const [isPosting, setIsPosting] = useState(false);
@@ -93,6 +93,11 @@ function QRCodeCard({ visitor }) {
       fileName: "<stdin>",
       lineNumber: 85,
       columnNumber: 13
+    }, this),
+    commentCount > 0 && /* @__PURE__ */ jsxDEV("div", { className: "comment-count", children: commentCount }, void 0, false, {
+      fileName: "<stdin>",
+      lineNumber: 89,
+      columnNumber: 17
     }, this)
   ] }, void 0, true, {
     fileName: "<stdin>",
@@ -105,6 +110,58 @@ function App() {
   const [sortedVisitors, setSortedVisitors] = useState([]);
   const [sortOrder, setSortOrder] = useState("random");
   const headerCanvasRef = useRef(null);
+  const [commentCounts, setCommentCounts] = useState({});
+  const processSingleComment = (comment, currentCounts) => {
+    const qrCommentRegex = /Check out the QR code for @(\w+)!/;
+    const hasImage = comment.content && comment.content.content.some((node) => node.type === "paragraph" && node.content && node.content.some((innerNode) => innerNode.type === "image"));
+    if (comment.raw_content && hasImage) {
+      const match = comment.raw_content.match(qrCommentRegex);
+      if (match && match[1]) {
+        const username = match[1];
+        const newCounts = { ...currentCounts };
+        newCounts[username] = (newCounts[username] || 0) + 1;
+        return newCounts;
+      }
+    }
+    return currentCounts;
+  };
+  useEffect(() => {
+    const processComments = async () => {
+      const project = await window.websim.getCurrentProject();
+      if (!project) return;
+      let allComments = [];
+      let hasNextPage = true;
+      let after = null;
+      try {
+        while (hasNextPage) {
+          const params = new URLSearchParams({ first: "100" });
+          if (after) params.append("after", after);
+          const response = await fetch(`/api/v1/projects/${project.id}/comments?${params}`);
+          if (!response.ok) throw new Error("Failed to fetch comments");
+          const data = await response.json();
+          const commentsData = data.comments.data;
+          allComments = allComments.concat(commentsData.map((c) => c.comment));
+          hasNextPage = data.comments.meta.has_next_page;
+          after = data.comments.meta.end_cursor;
+        }
+        let counts = {};
+        allComments.forEach((comment) => {
+          counts = processSingleComment(comment, counts);
+        });
+        setCommentCounts(counts);
+      } catch (error) {
+        console.error("Error processing comments:", error);
+      }
+    };
+    processComments();
+    const handleNewComment = ({ comment }) => {
+      setCommentCounts((prevCounts) => processSingleComment(comment, prevCounts));
+    };
+    window.websim.addEventListener("comment:created", handleNewComment);
+    return () => {
+      window.websim.removeEventListener("comment:created", handleNewComment);
+    };
+  }, []);
   useEffect(() => {
     if (headerCanvasRef.current) {
       const url = "https://websim.com/@api/qrc-wall";
@@ -166,11 +223,11 @@ function App() {
   return /* @__PURE__ */ jsxDEV(Fragment, { children: [
     /* @__PURE__ */ jsxDEV("a", { href: "https://websim.com/@api/qrc-wall", target: "_blank", rel: "noopener noreferrer", children: /* @__PURE__ */ jsxDEV("canvas", { ref: headerCanvasRef, id: "header-qr-code" }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 165,
+      lineNumber: 233,
       columnNumber: 17
     }, this) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 164,
+      lineNumber: 232,
       columnNumber: 13
     }, this),
     /* @__PURE__ */ jsxDEV("div", { className: "filter-controls", children: sortOptions.map((option) => /* @__PURE__ */ jsxDEV(
@@ -184,38 +241,38 @@ function App() {
       false,
       {
         fileName: "<stdin>",
-        lineNumber: 169,
+        lineNumber: 237,
         columnNumber: 21
       },
       this
     )) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 167,
+      lineNumber: 235,
       columnNumber: 13
     }, this),
     loading && /* @__PURE__ */ jsxDEV("p", { children: "Loading visitors..." }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 178,
+      lineNumber: 246,
       columnNumber: 25
     }, this),
-    /* @__PURE__ */ jsxDEV("div", { className: "qr-grid", children: sortedVisitors.map((visitor) => /* @__PURE__ */ jsxDEV(QRCodeCard, { visitor }, visitor.id, false, {
+    /* @__PURE__ */ jsxDEV("div", { className: "qr-grid", children: sortedVisitors.map((visitor) => /* @__PURE__ */ jsxDEV(QRCodeCard, { visitor, commentCount: commentCounts[visitor.username] || 0 }, visitor.id, false, {
       fileName: "<stdin>",
-      lineNumber: 181,
+      lineNumber: 249,
       columnNumber: 21
     }, this)) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 179,
+      lineNumber: 247,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 163,
+    lineNumber: 231,
     columnNumber: 9
   }, this);
 }
 const root = createRoot(document.getElementById("root"));
 root.render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
   fileName: "<stdin>",
-  lineNumber: 189,
+  lineNumber: 257,
   columnNumber: 13
 }));
