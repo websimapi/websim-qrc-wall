@@ -18,9 +18,15 @@ function QRCodeCard({ visitor }) {
 
     useEffect(() => {
         if (canvasRef.current && visitor.username) {
-            QRCode.toCanvas(canvasRef.current, profileUrl, { width: 180, margin: 1 }, function (error) {
-                if (error) console.error(error);
-            });
+            // The global variable might be window.qrcode or window.QRCode depending on version
+            const QRCodeLib = window.QRCode || window.qrcode;
+            if (QRCodeLib) {
+                QRCodeLib.toCanvas(canvasRef.current, profileUrl, { width: 180, margin: 1 }, function (error) {
+                    if (error) console.error(error);
+                });
+            } else {
+                console.error("QRCode library is not loaded.");
+            }
         }
     }, [visitor.username, profileUrl]);
 
@@ -85,4 +91,3 @@ function App() {
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
-
