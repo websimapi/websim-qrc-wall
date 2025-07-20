@@ -52,17 +52,28 @@ function QRCodeCard({ visitor }) {
       }, 2e3);
     }
   };
+  const getButtonContent = () => {
+    if (isPosting) return "\u23F3";
+    if (postStatus === "Posted!") return "\u2705";
+    if (postStatus === "Failed!") return "\u274C";
+    return "\u{1F4E4}";
+  };
   return /* @__PURE__ */ jsxDEV("div", { className: "qr-card", children: [
+    /* @__PURE__ */ jsxDEV("button", { onClick: handlePostToComments, disabled: isPosting, className: "comment-button", title: "Post to comments", children: getButtonContent() }, void 0, false, {
+      fileName: "<stdin>",
+      lineNumber: 76,
+      columnNumber: 13
+    }, this),
     /* @__PURE__ */ jsxDEV("a", { href: profileUrl, target: "_blank", rel: "noopener noreferrer", className: "qr-link", children: [
       /* @__PURE__ */ jsxDEV("canvas", { ref: canvasRef, width: "180", height: "180", className: "qr-code-canvas" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 70,
+        lineNumber: 80,
         columnNumber: 17
       }, this),
       /* @__PURE__ */ jsxDEV("div", { className: "user-info", children: [
         /* @__PURE__ */ jsxDEV("img", { src: `https://images.websim.com/avatar/${visitor.username}`, alt: `${visitor.username}'s avatar`, className: "user-avatar" }, void 0, false, {
           fileName: "<stdin>",
-          lineNumber: 72,
+          lineNumber: 82,
           columnNumber: 21
         }, this),
         /* @__PURE__ */ jsxDEV("span", { className: "username", children: [
@@ -70,27 +81,22 @@ function QRCodeCard({ visitor }) {
           visitor.username
         ] }, void 0, true, {
           fileName: "<stdin>",
-          lineNumber: 73,
+          lineNumber: 83,
           columnNumber: 21
         }, this)
       ] }, void 0, true, {
         fileName: "<stdin>",
-        lineNumber: 71,
+        lineNumber: 81,
         columnNumber: 17
       }, this)
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 69,
-      columnNumber: 13
-    }, this),
-    /* @__PURE__ */ jsxDEV("button", { onClick: handlePostToComments, disabled: isPosting, className: "comment-button", children: postStatus || "Post to comments" }, void 0, false, {
-      fileName: "<stdin>",
-      lineNumber: 76,
+      lineNumber: 79,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 68,
+    lineNumber: 75,
     columnNumber: 9
   }, this);
 }
@@ -119,32 +125,32 @@ function App() {
   return /* @__PURE__ */ jsxDEV(Fragment, { children: [
     /* @__PURE__ */ jsxDEV("h1", { children: "The QR Wall of Visitors" }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 112,
+      lineNumber: 119,
       columnNumber: 13
     }, this),
     loading && /* @__PURE__ */ jsxDEV("p", { children: "Loading visitors..." }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 113,
+      lineNumber: 120,
       columnNumber: 25
     }, this),
     /* @__PURE__ */ jsxDEV("div", { className: "qr-grid", children: shuffledVisitors.map((visitor) => /* @__PURE__ */ jsxDEV(QRCodeCard, { visitor }, visitor.id, false, {
       fileName: "<stdin>",
-      lineNumber: 116,
+      lineNumber: 123,
       columnNumber: 21
     }, this)) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 114,
+      lineNumber: 121,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 111,
+    lineNumber: 118,
     columnNumber: 9
   }, this);
 }
 const root = createRoot(document.getElementById("root"));
 root.render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
   fileName: "<stdin>",
-  lineNumber: 124,
+  lineNumber: 131,
   columnNumber: 13
 }));
