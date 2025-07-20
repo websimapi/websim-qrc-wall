@@ -33,24 +33,13 @@ function QRCodeCard({ visitor }) {
       const blob = await new Promise((resolve) => canvasRef.current.toBlob(resolve, "image/png"));
       const file = new File([blob], `qr_code_${visitor.username}.png`, { type: "image/png" });
       const imageUrl = await window.websim.upload(file);
-      const project = await window.websim.getCurrentProject();
-      if (!project) {
-        throw new Error("Could not get current project.");
-      }
-      const commentContent = `Check out the QR code for @${visitor.username}!
-
-![QR Code for ${visitor.username}](${imageUrl})`;
-      const response = await fetch(`/api/v1/projects/${project.id}/comments`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          content: commentContent
-        })
+      const commentContent = `Check out the QR code for @${visitor.username}!`;
+      const result = await window.websim.postComment({
+        content: commentContent,
+        images: [imageUrl]
       });
-      if (!response.ok) {
-        throw new Error(`Failed to post comment: ${response.statusText}`);
+      if (result && result.error) {
+        throw new Error(`Failed to post comment: ${result.error}`);
       }
       setPostStatus("Posted!");
     } catch (error) {
@@ -67,13 +56,13 @@ function QRCodeCard({ visitor }) {
     /* @__PURE__ */ jsxDEV("a", { href: profileUrl, target: "_blank", rel: "noopener noreferrer", className: "qr-link", children: [
       /* @__PURE__ */ jsxDEV("canvas", { ref: canvasRef, width: "180", height: "180", className: "qr-code-canvas" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 80,
+        lineNumber: 70,
         columnNumber: 17
       }, this),
       /* @__PURE__ */ jsxDEV("div", { className: "user-info", children: [
         /* @__PURE__ */ jsxDEV("img", { src: `https://images.websim.com/avatar/${visitor.username}`, alt: `${visitor.username}'s avatar`, className: "user-avatar" }, void 0, false, {
           fileName: "<stdin>",
-          lineNumber: 82,
+          lineNumber: 72,
           columnNumber: 21
         }, this),
         /* @__PURE__ */ jsxDEV("span", { className: "username", children: [
@@ -81,27 +70,27 @@ function QRCodeCard({ visitor }) {
           visitor.username
         ] }, void 0, true, {
           fileName: "<stdin>",
-          lineNumber: 83,
+          lineNumber: 73,
           columnNumber: 21
         }, this)
       ] }, void 0, true, {
         fileName: "<stdin>",
-        lineNumber: 81,
+        lineNumber: 71,
         columnNumber: 17
       }, this)
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 79,
+      lineNumber: 69,
       columnNumber: 13
     }, this),
     /* @__PURE__ */ jsxDEV("button", { onClick: handlePostToComments, disabled: isPosting, className: "comment-button", children: postStatus || "Post to comments" }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 86,
+      lineNumber: 76,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 78,
+    lineNumber: 68,
     columnNumber: 9
   }, this);
 }
@@ -130,32 +119,32 @@ function App() {
   return /* @__PURE__ */ jsxDEV(Fragment, { children: [
     /* @__PURE__ */ jsxDEV("h1", { children: "The QR Wall of Visitors" }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 122,
+      lineNumber: 112,
       columnNumber: 13
     }, this),
     loading && /* @__PURE__ */ jsxDEV("p", { children: "Loading visitors..." }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 123,
+      lineNumber: 113,
       columnNumber: 25
     }, this),
     /* @__PURE__ */ jsxDEV("div", { className: "qr-grid", children: shuffledVisitors.map((visitor) => /* @__PURE__ */ jsxDEV(QRCodeCard, { visitor }, visitor.id, false, {
       fileName: "<stdin>",
-      lineNumber: 126,
+      lineNumber: 116,
       columnNumber: 21
     }, this)) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 124,
+      lineNumber: 114,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 121,
+    lineNumber: 111,
     columnNumber: 9
   }, this);
 }
 const root = createRoot(document.getElementById("root"));
 root.render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
   fileName: "<stdin>",
-  lineNumber: 134,
+  lineNumber: 124,
   columnNumber: 13
 }));
