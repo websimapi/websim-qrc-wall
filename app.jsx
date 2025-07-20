@@ -59,39 +59,37 @@ function QRCodeCard({ visitor }) {
     return "\u{1F4E4}";
   };
   return /* @__PURE__ */ jsxDEV("div", { className: "qr-card", children: [
-    /* @__PURE__ */ jsxDEV("button", { onClick: handlePostToComments, disabled: isPosting, className: "comment-button", title: "Post to comments", children: getButtonContent() }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("img", { src: `https://images.websim.com/avatar/${visitor.username}`, alt: `${visitor.username}'s avatar`, className: "user-avatar" }, void 0, false, {
       fileName: "<stdin>",
       lineNumber: 76,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV("button", { onClick: handlePostToComments, disabled: isPosting, className: "comment-button", title: "Post to comments", children: getButtonContent() }, void 0, false, {
+      fileName: "<stdin>",
+      lineNumber: 77,
       columnNumber: 13
     }, this),
     /* @__PURE__ */ jsxDEV("a", { href: profileUrl, target: "_blank", rel: "noopener noreferrer", className: "qr-link", children: [
       /* @__PURE__ */ jsxDEV("canvas", { ref: canvasRef, width: "180", height: "180", className: "qr-code-canvas" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 80,
+        lineNumber: 81,
         columnNumber: 17
       }, this),
-      /* @__PURE__ */ jsxDEV("div", { className: "user-info", children: [
-        /* @__PURE__ */ jsxDEV("img", { src: `https://images.websim.com/avatar/${visitor.username}`, alt: `${visitor.username}'s avatar`, className: "user-avatar" }, void 0, false, {
-          fileName: "<stdin>",
-          lineNumber: 82,
-          columnNumber: 21
-        }, this),
-        /* @__PURE__ */ jsxDEV("span", { className: "username", children: [
-          "@",
-          visitor.username
-        ] }, void 0, true, {
-          fileName: "<stdin>",
-          lineNumber: 83,
-          columnNumber: 21
-        }, this)
+      /* @__PURE__ */ jsxDEV("div", { className: "user-info", children: /* @__PURE__ */ jsxDEV("span", { className: "username", children: [
+        "@",
+        visitor.username
       ] }, void 0, true, {
         fileName: "<stdin>",
-        lineNumber: 81,
+        lineNumber: 83,
+        columnNumber: 21
+      }, this) }, void 0, false, {
+        fileName: "<stdin>",
+        lineNumber: 82,
         columnNumber: 17
       }, this)
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 79,
+      lineNumber: 80,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {

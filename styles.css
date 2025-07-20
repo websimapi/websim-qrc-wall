@@ -67,10 +67,14 @@ h1 {
 .user-info {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 12px;
 }
 
 .user-avatar {
+    position: absolute;
+    top: 2px;
+    left: 2px;
     width: 36px;
     height: 36px;
     border-radius: 50%;
