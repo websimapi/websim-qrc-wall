@@ -102,19 +102,40 @@ function QRCodeCard({ visitor }) {
 }
 function App() {
   const { data: visitors, loading } = useQuery(room.collection(COLLECTION_TYPE));
-  const [shuffledVisitors, setShuffledVisitors] = useState([]);
+  const [sortedVisitors, setSortedVisitors] = useState([]);
+  const [sortOrder, setSortOrder] = useState("random");
   useEffect(() => {
     if (visitors) {
-      setShuffledVisitors(shuffleArray(visitors));
+      let visitorsToSort = [...visitors];
+      switch (sortOrder) {
+        case "newest":
+          visitorsToSort.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          break;
+        case "oldest":
+          visitorsToSort.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+          break;
+        case "alpha":
+          visitorsToSort.sort((a, b) => (a.username || "").localeCompare(b.username || ""));
+          break;
+        case "reverse-alpha":
+          visitorsToSort.sort((a, b) => (b.username || "").localeCompare(a.username || ""));
+          break;
+        case "random":
+        default:
+          visitorsToSort = shuffleArray(visitorsToSort);
+          break;
+      }
+      setSortedVisitors(visitorsToSort);
     }
-  }, [visitors]);
+  }, [visitors, sortOrder]);
   useEffect(() => {
     const checkInUser = async () => {
       const currentUser = await window.websim.getCurrentUser();
       if (!currentUser) return;
       try {
         await room.collection(COLLECTION_TYPE).upsert({
-          id: currentUser.id
+          id: currentUser.id,
+          username: currentUser.username
         });
       } catch (error) {
         console.error("Failed to check in user:", error);
@@ -122,35 +143,62 @@ function App() {
     };
     checkInUser();
   }, []);
+  const sortOptions = [
+    { key: "random", label: "Random" },
+    { key: "newest", label: "Newest" },
+    { key: "oldest", label: "Oldest" },
+    { key: "alpha", label: "A-Z" },
+    { key: "reverse-alpha", label: "Z-A" }
+  ];
   return /* @__PURE__ */ jsxDEV(Fragment, { children: [
     /* @__PURE__ */ jsxDEV("h1", { children: "The QR Wall of Visitors" }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 121,
+      lineNumber: 150,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "filter-controls", children: sortOptions.map((option) => /* @__PURE__ */ jsxDEV(
+      "button",
+      {
+        onClick: () => setSortOrder(option.key),
+        className: `filter-button ${sortOrder === option.key ? "active" : ""}`,
+        children: option.label
+      },
+      option.key,
+      false,
+      {
+        fileName: "<stdin>",
+        lineNumber: 153,
+        columnNumber: 21
+      },
+      this
+    )) }, void 0, false, {
+      fileName: "<stdin>",
+      lineNumber: 151,
       columnNumber: 13
     }, this),
     loading && /* @__PURE__ */ jsxDEV("p", { children: "Loading visitors..." }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 122,
+      lineNumber: 162,
       columnNumber: 25
     }, this),
-    /* @__PURE__ */ jsxDEV("div", { className: "qr-grid", children: shuffledVisitors.map((visitor) => /* @__PURE__ */ jsxDEV(QRCodeCard, { visitor }, visitor.id, false, {
+    /* @__PURE__ */ jsxDEV("div", { className: "qr-grid", children: sortedVisitors.map((visitor) => /* @__PURE__ */ jsxDEV(QRCodeCard, { visitor }, visitor.id, false, {
       fileName: "<stdin>",
-      lineNumber: 125,
+      lineNumber: 165,
       columnNumber: 21
     }, this)) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 123,
+      lineNumber: 163,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 120,
+    lineNumber: 149,
     columnNumber: 9
   }, this);
 }
 const root = createRoot(document.getElementById("root"));
 root.render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
   fileName: "<stdin>",
-  lineNumber: 133,
+  lineNumber: 173,
   columnNumber: 13
 }));

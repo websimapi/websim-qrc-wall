@@ -5,6 +5,14 @@
         "id": {
           "type": "text",
           "description": "The user's ID, to ensure one record per user."
+        },
+        "username": {
+            "type": "text",
+            "description": "The user's username."
+        },
+        "createdAt": {
+            "type": "timestamp",
+            "description": "The time the user first visited."
         }
       }
     }
