@@ -1,0 +1,76 @@
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 24px;
+    text-align: center;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 2rem;
+}
+
+.qr-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+    width: 100%;
+    max-width: 1400px;
+}
+
+.qr-card {
+    background: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.qr-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.qr-code-canvas {
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #444;
+}
+
+.username {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
