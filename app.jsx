@@ -69,27 +69,29 @@ function QRCodeCard({ visitor }) {
       lineNumber: 77,
       columnNumber: 13
     }, this),
-    /* @__PURE__ */ jsxDEV("a", { href: profileUrl, target: "_blank", rel: "noopener noreferrer", className: "qr-link", children: [
-      /* @__PURE__ */ jsxDEV("canvas", { ref: canvasRef, width: "180", height: "180", className: "qr-code-canvas" }, void 0, false, {
-        fileName: "<stdin>",
-        lineNumber: 81,
-        columnNumber: 17
-      }, this),
-      /* @__PURE__ */ jsxDEV("div", { className: "user-info", children: /* @__PURE__ */ jsxDEV("span", { className: "username", children: [
-        "@",
-        visitor.username
-      ] }, void 0, true, {
-        fileName: "<stdin>",
-        lineNumber: 83,
-        columnNumber: 21
-      }, this) }, void 0, false, {
-        fileName: "<stdin>",
-        lineNumber: 82,
-        columnNumber: 17
-      }, this)
+    /* @__PURE__ */ jsxDEV("div", { className: "user-info", children: /* @__PURE__ */ jsxDEV("a", { href: profileUrl, target: "_blank", rel: "noopener noreferrer", className: "username-link", children: /* @__PURE__ */ jsxDEV("span", { className: "username", children: [
+      "@",
+      visitor.username
     ] }, void 0, true, {
       fileName: "<stdin>",
+      lineNumber: 82,
+      columnNumber: 21
+    }, this) }, void 0, false, {
+      fileName: "<stdin>",
+      lineNumber: 81,
+      columnNumber: 17
+    }, this) }, void 0, false, {
+      fileName: "<stdin>",
       lineNumber: 80,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV("a", { href: profileUrl, target: "_blank", rel: "noopener noreferrer", className: "qr-link", children: /* @__PURE__ */ jsxDEV("canvas", { ref: canvasRef, width: "180", height: "180", className: "qr-code-canvas" }, void 0, false, {
+      fileName: "<stdin>",
+      lineNumber: 86,
+      columnNumber: 17
+    }, this) }, void 0, false, {
+      fileName: "<stdin>",
+      lineNumber: 85,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {
@@ -123,32 +125,32 @@ function App() {
   return /* @__PURE__ */ jsxDEV(Fragment, { children: [
     /* @__PURE__ */ jsxDEV("h1", { children: "The QR Wall of Visitors" }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 119,
+      lineNumber: 121,
       columnNumber: 13
     }, this),
     loading && /* @__PURE__ */ jsxDEV("p", { children: "Loading visitors..." }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 120,
+      lineNumber: 122,
       columnNumber: 25
     }, this),
     /* @__PURE__ */ jsxDEV("div", { className: "qr-grid", children: shuffledVisitors.map((visitor) => /* @__PURE__ */ jsxDEV(QRCodeCard, { visitor }, visitor.id, false, {
       fileName: "<stdin>",
-      lineNumber: 123,
+      lineNumber: 125,
       columnNumber: 21
     }, this)) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 121,
+      lineNumber: 123,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 118,
+    lineNumber: 120,
     columnNumber: 9
   }, this);
 }
 const root = createRoot(document.getElementById("root"));
 root.render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
   fileName: "<stdin>",
-  lineNumber: 131,
+  lineNumber: 133,
   columnNumber: 13
 }));
