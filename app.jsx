@@ -28,7 +28,7 @@ function QRCodeCard({ visitor }) {
     }
   }, [visitor.username, profileUrl]);
   return /* @__PURE__ */ jsxDEV("a", { href: profileUrl, target: "_blank", rel: "noopener noreferrer", className: "qr-card", children: [
-    /* @__PURE__ */ jsxDEV("canvas", { ref: canvasRef, className: "qr-code-canvas" }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("canvas", { ref: canvasRef, width: "180", height: "180", className: "qr-code-canvas" }, void 0, false, {
       fileName: "<stdin>",
       lineNumber: 36,
       columnNumber: 13
