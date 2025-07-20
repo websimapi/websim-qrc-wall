@@ -1,0 +1,13 @@
+{
+  "database": {
+    "schema": {
+      "visitor_qr_v1": {
+        "id": {
+          "type": "text",
+          "description": "The user's ID, to ensure one record per user."
+        }
+      }
+    }
+  }
+}
+
