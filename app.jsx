@@ -104,6 +104,19 @@ function App() {
   const { data: visitors, loading } = useQuery(room.collection(COLLECTION_TYPE));
   const [sortedVisitors, setSortedVisitors] = useState([]);
   const [sortOrder, setSortOrder] = useState("random");
+  const headerCanvasRef = useRef(null);
+  useEffect(() => {
+    if (headerCanvasRef.current) {
+      const url = "https://qrc-wall.on.websim.com";
+      QRCode.toCanvas(headerCanvasRef.current, url, {
+        width: 150,
+        margin: 1,
+        color: { dark: "#e0e0e0", light: "#121212" }
+      }, function(error) {
+        if (error) console.error(error);
+      });
+    }
+  }, []);
   useEffect(() => {
     if (visitors) {
       let visitorsToSort = [...visitors];
@@ -151,9 +164,13 @@ function App() {
     { key: "reverse-alpha", label: "Z-A" }
   ];
   return /* @__PURE__ */ jsxDEV(Fragment, { children: [
-    /* @__PURE__ */ jsxDEV("h1", { children: "The QR Wall of Visitors" }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("a", { href: "https://qrc-wall.on.websim.com", target: "_blank", rel: "noopener noreferrer", children: /* @__PURE__ */ jsxDEV("canvas", { ref: headerCanvasRef, id: "header-qr-code" }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 150,
+      lineNumber: 165,
+      columnNumber: 17
+    }, this) }, void 0, false, {
+      fileName: "<stdin>",
+      lineNumber: 164,
       columnNumber: 13
     }, this),
     /* @__PURE__ */ jsxDEV("div", { className: "filter-controls", children: sortOptions.map((option) => /* @__PURE__ */ jsxDEV(
@@ -167,38 +184,38 @@ function App() {
       false,
       {
         fileName: "<stdin>",
-        lineNumber: 153,
+        lineNumber: 169,
         columnNumber: 21
       },
       this
     )) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 151,
+      lineNumber: 167,
       columnNumber: 13
     }, this),
     loading && /* @__PURE__ */ jsxDEV("p", { children: "Loading visitors..." }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 162,
+      lineNumber: 178,
       columnNumber: 25
     }, this),
     /* @__PURE__ */ jsxDEV("div", { className: "qr-grid", children: sortedVisitors.map((visitor) => /* @__PURE__ */ jsxDEV(QRCodeCard, { visitor }, visitor.id, false, {
       fileName: "<stdin>",
-      lineNumber: 165,
+      lineNumber: 181,
       columnNumber: 21
     }, this)) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 163,
+      lineNumber: 179,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 149,
+    lineNumber: 163,
     columnNumber: 9
   }, this);
 }
 const root = createRoot(document.getElementById("root"));
 root.render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
   fileName: "<stdin>",
-  lineNumber: 173,
+  lineNumber: 189,
   columnNumber: 13
 }));
