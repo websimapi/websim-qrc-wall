@@ -16,6 +16,8 @@ function shuffleArray(array) {
 function QRCodeCard({ visitor }) {
   const canvasRef = useRef(null);
   const profileUrl = `https://websim.com/@${visitor.username}`;
+  const [isPosting, setIsPosting] = useState(false);
+  const [postStatus, setPostStatus] = useState("");
   useEffect(() => {
     if (canvasRef.current && visitor.username) {
       QRCode.toCanvas(canvasRef.current, profileUrl, { width: 180, margin: 1, errorCorrectionLevel: "H" }, function(error) {
@@ -23,34 +25,83 @@ function QRCodeCard({ visitor }) {
       });
     }
   }, [visitor.username, profileUrl]);
-  return /* @__PURE__ */ jsxDEV("a", { href: profileUrl, target: "_blank", rel: "noopener noreferrer", className: "qr-card", children: [
-    /* @__PURE__ */ jsxDEV("canvas", { ref: canvasRef, width: "180", height: "180", className: "qr-code-canvas" }, void 0, false, {
-      fileName: "<stdin>",
-      lineNumber: 32,
-      columnNumber: 13
-    }, this),
-    /* @__PURE__ */ jsxDEV("div", { className: "user-info", children: [
-      /* @__PURE__ */ jsxDEV("img", { src: `https://images.websim.com/avatar/${visitor.username}`, alt: `${visitor.username}'s avatar`, className: "user-avatar" }, void 0, false, {
+  const handlePostToComments = async () => {
+    if (!canvasRef.current || isPosting) return;
+    setIsPosting(true);
+    setPostStatus("Posting...");
+    try {
+      const blob = await new Promise((resolve) => canvasRef.current.toBlob(resolve, "image/png"));
+      const file = new File([blob], `qr_code_${visitor.username}.png`, { type: "image/png" });
+      const imageUrl = await window.websim.upload(file);
+      const project = await window.websim.getCurrentProject();
+      if (!project) {
+        throw new Error("Could not get current project.");
+      }
+      const commentContent = `Check out the QR code for @${visitor.username}!
+
+![QR Code for ${visitor.username}](${imageUrl})`;
+      const response = await fetch(`/api/v1/projects/${project.id}/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          content: commentContent
+        })
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to post comment: ${response.statusText}`);
+      }
+      setPostStatus("Posted!");
+    } catch (error) {
+      console.error("Failed to post QR code to comments:", error);
+      setPostStatus("Failed!");
+    } finally {
+      setTimeout(() => {
+        setIsPosting(false);
+        setPostStatus("");
+      }, 2e3);
+    }
+  };
+  return /* @__PURE__ */ jsxDEV("div", { className: "qr-card", children: [
+    /* @__PURE__ */ jsxDEV("a", { href: profileUrl, target: "_blank", rel: "noopener noreferrer", className: "qr-link", children: [
+      /* @__PURE__ */ jsxDEV("canvas", { ref: canvasRef, width: "180", height: "180", className: "qr-code-canvas" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 34,
+        lineNumber: 80,
         columnNumber: 17
       }, this),
-      /* @__PURE__ */ jsxDEV("span", { className: "username", children: [
-        "@",
-        visitor.username
+      /* @__PURE__ */ jsxDEV("div", { className: "user-info", children: [
+        /* @__PURE__ */ jsxDEV("img", { src: `https://images.websim.com/avatar/${visitor.username}`, alt: `${visitor.username}'s avatar`, className: "user-avatar" }, void 0, false, {
+          fileName: "<stdin>",
+          lineNumber: 82,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV("span", { className: "username", children: [
+          "@",
+          visitor.username
+        ] }, void 0, true, {
+          fileName: "<stdin>",
+          lineNumber: 83,
+          columnNumber: 21
+        }, this)
       ] }, void 0, true, {
         fileName: "<stdin>",
-        lineNumber: 35,
+        lineNumber: 81,
         columnNumber: 17
       }, this)
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 33,
+      lineNumber: 79,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV("button", { onClick: handlePostToComments, disabled: isPosting, className: "comment-button", children: postStatus || "Post to comments" }, void 0, false, {
+      fileName: "<stdin>",
+      lineNumber: 86,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 31,
+    lineNumber: 78,
     columnNumber: 9
   }, this);
 }
@@ -79,32 +130,32 @@ function App() {
   return /* @__PURE__ */ jsxDEV(Fragment, { children: [
     /* @__PURE__ */ jsxDEV("h1", { children: "The QR Wall of Visitors" }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 70,
+      lineNumber: 122,
       columnNumber: 13
     }, this),
     loading && /* @__PURE__ */ jsxDEV("p", { children: "Loading visitors..." }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 71,
+      lineNumber: 123,
       columnNumber: 25
     }, this),
     /* @__PURE__ */ jsxDEV("div", { className: "qr-grid", children: shuffledVisitors.map((visitor) => /* @__PURE__ */ jsxDEV(QRCodeCard, { visitor }, visitor.id, false, {
       fileName: "<stdin>",
-      lineNumber: 74,
+      lineNumber: 126,
       columnNumber: 21
     }, this)) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 72,
+      lineNumber: 124,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 69,
+    lineNumber: 121,
     columnNumber: 9
   }, this);
 }
 const root = createRoot(document.getElementById("root"));
 root.render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
   fileName: "<stdin>",
-  lineNumber: 82,
+  lineNumber: 134,
   columnNumber: 13
 }));
