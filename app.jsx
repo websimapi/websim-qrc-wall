@@ -107,7 +107,7 @@ function App() {
   const headerCanvasRef = useRef(null);
   useEffect(() => {
     if (headerCanvasRef.current) {
-      const url = "https://qrc-wall.on.websim.com";
+      const url = "https://websim.com/@api/qrc-wall";
       QRCode.toCanvas(headerCanvasRef.current, url, {
         width: 150,
         margin: 1,
@@ -164,7 +164,7 @@ function App() {
     { key: "reverse-alpha", label: "Z-A" }
   ];
   return /* @__PURE__ */ jsxDEV(Fragment, { children: [
-    /* @__PURE__ */ jsxDEV("a", { href: "https://qrc-wall.on.websim.com", target: "_blank", rel: "noopener noreferrer", children: /* @__PURE__ */ jsxDEV("canvas", { ref: headerCanvasRef, id: "header-qr-code" }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("a", { href: "https://websim.com/@api/qrc-wall", target: "_blank", rel: "noopener noreferrer", children: /* @__PURE__ */ jsxDEV("canvas", { ref: headerCanvasRef, id: "header-qr-code" }, void 0, false, {
       fileName: "<stdin>",
       lineNumber: 165,
       columnNumber: 17
